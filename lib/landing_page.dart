@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:feed_dino/message_page.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -12,6 +15,16 @@ class _LandingPageState extends State<LandingPage> {
   bool clicked = false;
   AssetImage cam = const AssetImage("assets/cam_icon.png");
   AssetImage done = const AssetImage("assets/done.png");
+  File? _image;
+
+  final imagePicker = ImagePicker();
+
+  Future getImage() async {
+    final image = await imagePicker.pickImage(source: ImageSource.camera);
+    setState(() {
+      _image = File(image!.path);
+    });
+  }
 
   toggleClick() {
     setState(() {
@@ -68,14 +81,27 @@ class _LandingPageState extends State<LandingPage> {
                     width: 300,
                     height: 275,
                     child: Stack(
-                      children: const [
+                      children: [
                         Center(
-                            child:
-                                Image(image: AssetImage("assets/Plate.png"))),
-                        Center(
+                            child: _image == null
+                                ? const Image(
+                                    image: AssetImage("assets/Plate.png"))
+                                : Container(
+                                    height: 200,
+                                    width: 200,
+                                    decoration: BoxDecoration(
+                                      color: Colors.green,
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(100)),
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: FileImage(_image!)),
+                                    ),
+                                  )),
+                        const Center(
                             child:
                                 Image(image: AssetImage("assets/Corners.png"))),
-                        Center(
+                        const Center(
                             child:
                                 Image(image: AssetImage("assets/Cutlery.png"))),
                       ],
@@ -101,9 +127,14 @@ class _LandingPageState extends State<LandingPage> {
                       child: Image(image: clicked ? done : cam),
                     ),
                     onTap: () {
+                      if (clicked == false) {
+                        getImage();
+                      }
                       if (clicked == true) {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (_) => MessagePage()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const MessagePage()));
                       }
                       toggleClick();
                     },
