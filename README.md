@@ -9,6 +9,8 @@ Flutter Mobile Development Assignment.
 
 ## Note
 All Photos are uploaded to Firebase Storage and can be viewed by the admin.
+<br>
+<img src="https://github.com/utgupta27/feed_dino/blob/master/res/Screenshot%20from%202021-12-14%2020-40-21.png" width=800 height=480>
 
 ## SnapShots
  <table>
