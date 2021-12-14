@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:feed_dino/message_page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -20,10 +21,14 @@ class _LandingPageState extends State<LandingPage> {
   final imagePicker = ImagePicker();
 
   Future getImage() async {
-    final image = await imagePicker.pickImage(source: ImageSource.camera);
-    setState(() {
-      _image = File(image!.path);
-    });
+    try {
+      final image = await imagePicker.pickImage(source: ImageSource.camera);
+      setState(() {
+        _image = File(image!.path);
+      });
+    } catch (e) {
+      clicked = false;
+    }
   }
 
   toggleClick() {
@@ -57,10 +62,11 @@ class _LandingPageState extends State<LandingPage> {
               ),
             ],
           ),
-          Container(
-            color: Colors.red,
+          SizedBox(
+            // color: Colors.red,
             height: 180,
             width: 300,
+            child: Lottie.asset("assets/food-carousel.json"),
           ),
           const SizedBox(
             height: 10,
@@ -108,12 +114,19 @@ class _LandingPageState extends State<LandingPage> {
                     ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    "Click Your Meal",
-                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 24),
-                  ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: clicked
+                      ? const Text(
+                          "Will you eat this?",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 24),
+                        )
+                      : const Text(
+                          "Click Your Meal",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 24),
+                        ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8),
