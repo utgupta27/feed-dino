@@ -7,7 +7,8 @@ Flutter Mobile Development Assignment.
 <a href="https://github.com/utgupta27/feed_dino/releases/download/v0.1/Utsav.Gupta.-utgupta27.apk" target="_blank">![image](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)</a> 
 
 
-    
+## Note
+All Photos are uploaded to Firebase Storage and can be viewed by the admin.
 
 ## SnapShots
  <table>
