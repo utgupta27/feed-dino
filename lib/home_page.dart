@@ -1,5 +1,6 @@
 import 'package:feed_dino/landing_page.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -19,7 +20,14 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               children: [
                 const SizedBox(
-                  height: 600,
+                  height: 100,
+                ),
+                SizedBox(
+                  height: 300,
+                  child: Lottie.asset("assets/food-animation.json"),
+                ),
+                const SizedBox(
+                  height: 200,
                 ),
                 Center(
                   child: ElevatedButton(

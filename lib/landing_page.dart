@@ -4,6 +4,9 @@ import 'package:feed_dino/message_page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
+import 'package:intl/intl.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -14,6 +17,7 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   bool clicked = false;
+  bool isUploading = false;
   AssetImage cam = const AssetImage("assets/cam_icon.png");
   AssetImage done = const AssetImage("assets/done.png");
   File? _image;
@@ -21,6 +25,7 @@ class _LandingPageState extends State<LandingPage> {
   final imagePicker = ImagePicker();
 
   Future getImage() async {
+    await Permission.photos.request();
     try {
       final image = await imagePicker.pickImage(source: ImageSource.camera);
       setState(() {
@@ -29,6 +34,24 @@ class _LandingPageState extends State<LandingPage> {
     } catch (e) {
       clicked = false;
     }
+  }
+
+  uploadImage() async {
+    isUploading = true;
+    DateTime date = DateTime.now();
+    final _firebaseStorage = FirebaseStorage.instance;
+    await _firebaseStorage
+        .ref()
+        .child('images/' + date.toString())
+        .putFile(_image!)
+        .whenComplete(() {
+      setState(() {
+        isUploading = false;
+      });
+      Navigator.push(
+          context, MaterialPageRoute(builder: (_) => const MessagePage()));
+    });
+    // var downloadUrl = await snapshot.ref.getDownloadURL();
   }
 
   toggleClick() {
@@ -66,7 +89,9 @@ class _LandingPageState extends State<LandingPage> {
             // color: Colors.red,
             height: 180,
             width: 300,
-            child: Lottie.asset("assets/food-carousel.json"),
+            child: isUploading
+                ? Lottie.asset("assets/uploading.json")
+                : Lottie.asset("assets/food-carousel.json"),
           ),
           const SizedBox(
             height: 10,
@@ -144,10 +169,7 @@ class _LandingPageState extends State<LandingPage> {
                         getImage();
                       }
                       if (clicked == true) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const MessagePage()));
+                        uploadImage();
                       }
                       toggleClick();
                     },
