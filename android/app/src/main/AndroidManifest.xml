@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.feed_dino">
    <application
-        android:label="feed_dino"
+        android:label="Utsav Gupta -utgupta27"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
